@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication
+namespace WebApplication.Models
 {
     public class Post
     {
