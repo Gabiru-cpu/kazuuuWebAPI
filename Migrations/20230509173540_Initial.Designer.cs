@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyWallWebAPI;
 using WebApplication.Context;
 
 namespace WebApplication.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20230509140221_Initial")]
+    [Migration("20230509173540_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,7 +19,7 @@ namespace WebApplication.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.8");
 
-            modelBuilder.Entity("MyWallWebAPI.Post", b =>
+            modelBuilder.Entity("WebApplication.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,7 +28,7 @@ namespace WebApplication.Migrations
                     b.Property<string>("Conteudo")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Titulo")
@@ -37,7 +36,7 @@ namespace WebApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Post");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,8 +12,12 @@ namespace WebApplication.Context
         {
         }
 
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Post> Post { get; set; }
 
-       
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Post>();
+        }
+
     }
 }
