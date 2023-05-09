@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using WebApplication.Context;
-using WebApplication.Models;
+using WebApplication.Domain.Models;
+using WebApplication.Infrastructure.Data.Repositories;
+using WebApplication.Domain.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace WebApplication.Controllers
 {
@@ -12,68 +15,77 @@ namespace WebApplication.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly MySqlContext _context;
+        private readonly PostService _postService;
 
-        public PostController(MySqlContext context)
+        public PostController(PostService postService)
         {
-            _context = context;
+            _postService = postService;
         }
 
         [HttpGet("list-posts")]
         public async Task<ActionResult> ListPosts()
         {
-            List<Post> list = await _context.Post.ToListAsync();
+            try
+            {
+                List<Post> list = await _postService.ListPosts();
 
-            return Ok(list);
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("get-post")]
         public async Task<ActionResult> GetPost([FromQuery] int postId)
         {
-            Post item = await _context.Post.FindAsync(postId);
-
-            if (item == null)
+            try
             {
-                return NoContent();
+                Post post = await _postService.GetPost(postId);
+
+                return Ok(post);
             }
-            return Ok(item);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpPost("new-post")]
-        public async Task<ActionResult> NewPost([FromBody] Post post)
+        [HttpPost("create-post")]
+        public async Task<ActionResult> CreatePost([FromBody] Post post)
         {
-            post.Data = DateTime.Now;
+            try
+            {
+                post = await _postService.CreatePost(post);
 
-            var ret = await _context.Post.AddAsync(post);
-
-            await _context.SaveChangesAsync();
-
-            ret.State = EntityState.Detached;
-
-            return Ok(ret.Entity);
+                return Ok(post);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("update-post")]
         public async Task<ActionResult> UpdatePost([FromBody] Post post)
         {
-            _context.Entry(post).State = EntityState.Modified;
-
-            return Ok(await _context.SaveChangesAsync());
+            try
+            {
+                return Ok(await _postService.UpdatePost(post));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("delete-post")]
-        public async Task<ActionResult> DeletePost([FromBody] int id)
+        public async Task<ActionResult> DeletePost([FromBody] int postId)
         {
-            var item = await _context.Post.FindAsync(id);
-            if (item == null)
-            {
-                return BadRequest();
-            }
-
-            _context.Post.Remove(item);
-            await _context.SaveChangesAsync();
-
-            return Ok(true);
+            return Ok(_postService.DeletePost(postId));
         }
     }
+
+}
 }

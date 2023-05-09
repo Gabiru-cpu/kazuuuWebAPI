@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication.Models;
+using WebApplication.Domain.Models;
 
 namespace WebApplication.Context
 {

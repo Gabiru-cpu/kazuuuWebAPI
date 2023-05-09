@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication.Context;
+using WebApplication.Domain.Services;
+using WebApplication.Infrastructure.Data.Repositories;
 
 namespace WebApplication
 {
@@ -34,6 +36,10 @@ namespace WebApplication
                 options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
 
             services.AddControllers();
+
+            services.AddScoped<PostRepository>();
+            services.AddScoped<PostService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication", Version = "v1" });
