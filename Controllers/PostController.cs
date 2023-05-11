@@ -3,14 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
-using WebApplication.Context;
+using WebApplication.Infrastructure.Data.Context;
 using WebApplication.Domain.Models;
 using WebApplication.Infrastructure.Data.Repositories;
 using WebApplication.Domain.Services;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
@@ -88,4 +90,4 @@ namespace WebApplication.Controllers
     }
 
 }
-}
+

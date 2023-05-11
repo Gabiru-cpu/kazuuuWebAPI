@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication.Context;
 using WebApplication.Domain.Models;
+using WebApplication.Infrastructure.Data.Context;
 
 namespace WebApplication.Infrastructure.Data.Repositories
 {
